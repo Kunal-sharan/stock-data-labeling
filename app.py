@@ -114,6 +114,7 @@ def update_database(user_id, df):
         for i in range(len(df_updated_db)):
             stock_overlapping_intervals.append([df_updated_db["stock_id"][i], df_updated_db["stock_id_end"][i]])
         stock_overlapping_intervals.sort()
+        stock_overlapping_intervals
         if len(stock_overlapping_intervals) == 0:
             st.warning("No data available")
             return
@@ -132,6 +133,7 @@ def update_database(user_id, df):
                 first = stock_overlapping_intervals[i][0]
                 second = stock_overlapping_intervals[i][1]
         # st.write(df_updated_db)
+        st.write(stock_non_overlapping_intervals)
         progress_text = f"{c} out of {len(df)} labelled: {len(df)-c} left"
         my_bar = st.progress(0, text=progress_text)
         completetion = (c/len(df)) * 100
