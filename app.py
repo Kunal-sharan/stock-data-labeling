@@ -138,12 +138,11 @@ def update_database(user_id, df):
             st.warning("No data available")
             return
         m_intervals = merge_intervals(stock_overlapping_intervals)
-        st.write(m_intervals)
+        
         c = 0
         for intervals in m_intervals:
-            st.write(intervals)
             c+=intervals[1]-intervals[0]+1
-            st.write(c)
+            
         progress_text = f"{c} out of {len(df)} labelled: {len(df)-c} left"
         my_bar = st.progress(0, text=progress_text)
         completetion = (c/len(df)) * 100
