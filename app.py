@@ -8,7 +8,7 @@ import time
 import os
 from dotenv import load_dotenv
 load_dotenv()
-avien_key = os.getenv("AVIEN_KEY")
+avien_key = st.secrets["AVIEN_KEY"]
 st.write(avien_key)
 @st.cache_data
 def get_all_users():
