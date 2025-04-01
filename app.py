@@ -139,7 +139,7 @@ def update_database(user_id, df):
         m_intervals = merge_intervals(stock_overlapping_intervals)
         st.write(m_intervals)
         c = 0
-        for interval in m_intervals:
+        for intervals in m_intervals:
             c+=intervals[1]-intervals[0]+1
         progress_text = f"{c} out of {len(df)} labelled: {len(df)-c} left"
         my_bar = st.progress(0, text=progress_text)
