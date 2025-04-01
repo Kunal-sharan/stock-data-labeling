@@ -4,3 +4,4 @@ SQLAlchemy==2.0.30
 st_gsheets_connection==0.1.0
 streamlit==1.41.1
 python-dotenv
+mysqlclient
