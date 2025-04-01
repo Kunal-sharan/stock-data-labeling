@@ -104,33 +104,25 @@ def carousel_graph(df, user_id):
         st.session_state.graph_index = new_index
         st.rerun()
 
-def create_non_overlapping_intervals(overlapping_intervals):
-    if not overlapping_intervals:
-        return [], 0
+def merge_intervals(arr):
+  a = []
+  arr.sort()
+  first = arr[0][0]
+  second = arr[0][1]
+  i = 1
+  
+  while i < len(arr):
+    if arr[i][0] <= second:
+      if arr[i][1] > second:
+        second = arr[i][1]
+    else:
+      a.append([first,second])
+      first = arr[i][0]
+      second = arr[i][1]
+    i+=1
     
-    # Sort intervals by start time
-    overlapping_intervals.sort()
-    
-    # Initialize with first interval
-    merged = [overlapping_intervals[0]]
-    
-    # Merge overlapping intervals
-    for interval in overlapping_intervals[1:]:
-        current_start, current_end = interval
-        prev_start, prev_end = merged[-1]
-        
-        if current_start <= prev_end + 1:  # Check if intervals overlap or are adjacent
-            # Merge with previous interval
-            merged[-1] = [prev_start, max(prev_end, current_end)]
-        else:
-            # Add as a new interval
-            merged.append(interval)
-    
-    # Calculate total points
-    total_points = sum(end - start + 1 for start, end in merged)
-    
-    return merged, total_points
-    
+  a.append([first,second])
+  return a
 
 
 @st.fragment
@@ -138,15 +130,17 @@ def update_database(user_id, df):
     if st.button(f"Show the data base for user_id : {user_id}"):
         conn_sql = st.connection('mysql', type='sql')
         df_updated_db = conn_sql.query(f'select * from stock_data_label where user_id = {user_id};', ttl=1)
-        st.write(df_updated_db)
         stock_overlapping_intervals = []
         for i in range(len(df_updated_db)):
             stock_overlapping_intervals.append([df_updated_db["stock_id"][i], df_updated_db["stock_id_end"][i]])
         if len(stock_overlapping_intervals) == 0:
             st.warning("No data available")
             return
-        merged_intervals,c = create_non_overlapping_intervals(stock_overlapping_intervals)
-        st.write(merged_intervals)
+        m_intervals = merged_intervals(stock_overlapping_intervals)
+        st.write(m_intervals)
+        c = 0
+        for interval in m_intervals:
+            c+=intervals[1]-intervals[0]+1
         progress_text = f"{c} out of {len(df)} labelled: {len(df)-c} left"
         my_bar = st.progress(0, text=progress_text)
         completetion = (c/len(df)) * 100
