@@ -6,6 +6,9 @@ import random
 import pandas as pd
 import time
 import os
+from dotenv import load_dotenv
+load_dotenv()
+avien_key = os.getenv("AVIEN_KEY")
 
 @st.cache_data
 def get_all_users():
@@ -48,7 +51,7 @@ def plot_stock_chart(df, title="Stock Price Movement"):
 # MySQL Database Connection
 def get_connection():
     # return create_engine("mysql+pymysql://root:isagi11@localhost/mydb")
-    return create_engine("mysql://avnadmin:AVNS_xgF6lLmxsG1bwqJQJcr@mysql-1409-kunalsharan1409-54fa.d.aivencloud.com:10676/defaultdb")
+    return create_engine(f"mysql://avnadmin:{avien_key}@mysql-1409-kunalsharan1409-54fa.d.aivencloud.com:10676/defaultdb")
 
 cache = set()
 stock_entry = []
