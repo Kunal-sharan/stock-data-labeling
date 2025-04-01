@@ -136,7 +136,7 @@ def update_database(user_id, df):
         if len(stock_overlapping_intervals) == 0:
             st.warning("No data available")
             return
-        m_intervals = merged_intervals(stock_overlapping_intervals)
+        m_intervals = merge_intervals(stock_overlapping_intervals)
         st.write(m_intervals)
         c = 0
         for interval in m_intervals:
