@@ -130,7 +130,7 @@ def update_database(user_id, df):
     if st.button(f"Show the data base for user_id : {user_id}"):
         conn_sql = st.connection('mysql', type='sql')
         df_updated_db = conn_sql.query(f'select * from stock_data_label where user_id = {user_id};', ttl=1)
-        df_updated_db
+        # df_updated_db
         stock_overlapping_intervals = []
         for i in range(len(df_updated_db)):
             stock_overlapping_intervals.append([df_updated_db.iloc[i]["stock_id"], df_updated_db.iloc[i]["stock_id_end"]])
