@@ -136,7 +136,7 @@ def merge_intervals(stock_overlapping_intervals):
     # Don't forget to add the last merged interval
     stock_non_overlapping_intervals.append([first, second])
     c += second - first + 1
-    
+    st.write(c)
     return stock_non_overlapping_intervals, c
 
 
