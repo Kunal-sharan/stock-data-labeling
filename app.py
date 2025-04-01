@@ -132,7 +132,7 @@ def update_database(user_id, df):
         df_updated_db = conn_sql.query(f'select * from stock_data_label where user_id = {user_id};', ttl=1)
         stock_overlapping_intervals = []
         for i in range(len(df_updated_db)):
-            stock_overlapping_intervals.append([df_updated_db["stock_id"][i], df_updated_db["stock_id_end"][i]])
+            stock_overlapping_intervals.append([df_updated_db.iloc[i]["stock_id"], df_updated_db.iloc[i]["stock_id_end"]])
         if len(stock_overlapping_intervals) == 0:
             st.warning("No data available")
             return
