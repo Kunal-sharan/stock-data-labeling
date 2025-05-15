@@ -83,7 +83,12 @@ def insert_into_database(start_time, end_time, user_id, stock_end_id, df_main):
 def carousel_graph(df, user_id):
     # Initialize graph_index in session state if not set
     if "graph_index" not in st.session_state:
-        st.session_state.graph_index = random.randint(0, len(df) - 30)
+        prev_entries = cache_entries(user_id)
+        graph_index = random.randint(0, len(df) - 30)
+        while graph_index in prev_entries:
+            graph_index = graph_index = random.randint(0, len(df) - 30)
+        st.session_state.graph_index = graph_index    
+            
     
     # Use the current index to display a graph segment
     current_index = st.session_state.graph_index
@@ -98,32 +103,15 @@ def carousel_graph(df, user_id):
     if st.button("Next Graph"):
         # Update index with a new random segment ensuring it doesn't overlap with previously used ones
         new_index = random.randint(0, len(df) - 30)
+        prev_entries = cache_entries(user_id)
+        st.write(prev_entries)
+        while new_index in prev_entries:
+            new_index = random.randint(0, len(df) - 30)
         # Ensure new_index is different than current (or you can implement more advanced checks)
         while new_index == current_index:
             new_index = random.randint(0, len(df) - 30)
         st.session_state.graph_index = new_index
         st.rerun()
-
-def merge_intervals(arr):
-  a = []
-  arr.sort()
-  first = arr[0][0]
-  second = arr[0][1]
-  i = 1
-  
-  while i < len(arr):
-    if arr[i][0] <= second:
-      if arr[i][1] > second:
-        second = arr[i][1]
-    else:
-      a.append([first,second])
-      first = arr[i][0]
-      second = arr[i][1]
-    i+=1
-    
-  a.append([first,second])
-  return a
-
 
 @st.fragment
 def update_database(user_id, df):
