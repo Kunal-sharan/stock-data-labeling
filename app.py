@@ -104,7 +104,6 @@ def carousel_graph(df, user_id):
         # Update index with a new random segment ensuring it doesn't overlap with previously used ones
         new_index = random.randint(0, len(df) - 30)
         prev_entries = cache_entries(user_id)
-        # st.write(prev_entries)
         while new_index in prev_entries:
             new_index = random.randint(0, len(df) - 30)
         # Ensure new_index is different than current (or you can implement more advanced checks)
