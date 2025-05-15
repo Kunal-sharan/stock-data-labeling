@@ -131,21 +131,10 @@ def update_database(user_id, df):
         conn_sql = st.connection('mysql', type='sql')
         df_updated_db = conn_sql.query(f'select * from stock_data_label where user_id = {user_id};', ttl=1)
         # df_updated_db
-        stock_overlapping_intervals = []
-        for i in range(len(df_updated_db)):
-            stock_overlapping_intervals.append([df_updated_db.iloc[i]["stock_id"], df_updated_db.iloc[i]["stock_id_end"]])
-        if len(stock_overlapping_intervals) == 0:
-            st.warning("No data available")
-            return
-        m_intervals = merge_intervals(stock_overlapping_intervals)
-        
-        c = 0
-        for intervals in m_intervals:
-            c+=intervals[1]-intervals[0]+1
-            
-        progress_text = f"{c} out of {len(df)} labelled: {len(df)-c} left"
+        c = len(df_updated_db)
+        progress_text = f"{c} out of {len(df)-30} labelled: {len(df)-30-c} left"
         my_bar = st.progress(0, text=progress_text)
-        completetion = (c/len(df)) * 100
+        completetion = (c/(len(df)-30)) * 100
         directory_name = f"{user_id}_labels"
         try:
             os.mkdir(directory_name)
